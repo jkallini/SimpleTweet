@@ -3,7 +3,9 @@ package com.codepath.apps.restclienttemplate.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Tweet {
+import java.io.Serializable;
+
+public class Tweet implements Serializable {
 
     // list out the attributes
     public String body;

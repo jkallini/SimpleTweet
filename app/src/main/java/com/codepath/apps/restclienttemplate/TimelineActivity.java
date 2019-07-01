@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,22 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // check request code and result code
+        if (requestCode == ComposeActivity.REQUEST_CODE && resultCode == 0) {
+            // Use data parameter
+            Tweet tweet = (Tweet) data.getSerializableExtra("new_tweet");
+
+            // notify the adapter that an item has been added
+            tweets.add(0, tweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -39,14 +56,9 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle presses on the compose tweet menu item
         if (item.getItemId() == R.id.miCompose) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-                    TimelineActivity.this.startActivityForResult(intent, 0);
-                    return true;
-                }
-            });
+            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+            TimelineActivity.this.startActivityForResult(intent, ComposeActivity.REQUEST_CODE);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
