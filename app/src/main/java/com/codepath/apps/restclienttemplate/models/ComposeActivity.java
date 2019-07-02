@@ -41,13 +41,15 @@ public class ComposeActivity extends AppCompatActivity {
 
                 final String tweetText = etTweet.getText().toString();
 
+                // send the user's tweet
                 client.sendTweet(tweetText, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         try {
-                            //
+                            // get tweet from JSON response
                             Tweet tweet = Tweet.fromJSON(response);
 
+                            // create intent and set result
                             Intent intent = new Intent();
                             intent.putExtra("new_tweet", tweet);
                             setResult(0, intent);
