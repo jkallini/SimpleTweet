@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/miCompose"
-        android:icon="@drawable/ic_launcher"
-        app:showAsAction="ifRoom"
-        android:title="Compose">
-    </item>
+        android:icon="@drawable/vector_compose_fab"
+        android:title="Compose"
+        app:showAsAction="ifRoom"></item>
 </menu>
