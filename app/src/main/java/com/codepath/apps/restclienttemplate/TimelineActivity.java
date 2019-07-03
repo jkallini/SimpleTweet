@@ -39,7 +39,7 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // check request code and result code
-        if (requestCode == ComposeActivity.REQUEST_CODE && resultCode == 0) {
+        if (requestCode == ComposeActivity.REQUEST_CODE && resultCode == RESULT_OK) {
             // Use data parameter
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("new_tweet"));
 
