@@ -17,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -77,7 +78,7 @@ public class ComposeActivity extends AppCompatActivity {
 
                             // create intent and set result
                             Intent intent = new Intent();
-                            intent.putExtra("new_tweet", tweet);
+                            intent.putExtra("new_tweet", Parcels.wrap(tweet));
                             setResult(0, intent);
                             finish();
                         } catch (JSONException e) {

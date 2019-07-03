@@ -2,16 +2,20 @@ package com.codepath.apps.restclienttemplate.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
+@Parcel
+public class User {
 
     // attributes
     public String name;
     public long uid;
     public String screenName;
     public String profileImageUrl;
+
+    // generic constructor
+    public User() {
+    }
 
     // deserialize the JSON
     public static User fromJSON(JSONObject jsonObject) throws JSONException {
