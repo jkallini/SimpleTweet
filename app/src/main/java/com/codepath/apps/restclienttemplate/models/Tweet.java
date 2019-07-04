@@ -75,11 +75,13 @@ public class Tweet {
 
     public void switchFavorite(Context context, JsonHttpResponseHandler handler) {
         TwitterApp.getRestClient(context).favoriteTweet(favorited = !favorited, uid, handler);
-        favoriteCount = (favorited ? 1 : -1);
+        favoriteCount += (favorited ? 1 : -1);
     }
 
     public void switchRetweet(Context context, JsonHttpResponseHandler handler) {
         TwitterApp.getRestClient(context).retweetTweet(retweeted = !retweeted, uid, handler);
-        retweetCount = (retweeted ? 1 : -1);
+        retweetCount += (retweeted ? 1 : -1);
     }
+
+    
 }

@@ -42,6 +42,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         final ViewHolder viewHolder = new ViewHolder(tweetView);
 
+        // enable favorite button
         viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,9 +51,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 tweet.switchFavorite(context, new JsonHttpResponseHandler());
                 setButton(viewHolder.ivFavorite, tweet.favorited,
                         R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
+                viewHolder.tvFavoriteCount.setText(String.format("%d", tweet.favoriteCount));
             }
         });
 
+        // enable retweet button
         viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +64,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 tweet.switchRetweet(context, new JsonHttpResponseHandler());
                 setButton(viewHolder.ivRetweet, tweet.retweeted,
                         R.drawable.ic_vector_retweet_stroke, R.drawable.ic_vector_retweet, R.color.medium_green);
+                viewHolder.tvRetweetCount.setText(String.format("%d", tweet.retweetCount));
             }
         });
 
@@ -78,6 +82,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvBody.setText(tweet.body);
         holder.tvCreatedAt.setText(" • " + tweet.getRelativeTimeAgo());
         holder.tvScreenName.setText("@" + tweet.user.screenName);
+        holder.tvFavoriteCount.setText(String.format("%d", tweet.favoriteCount));
+        holder.tvRetweetCount.setText(String.format("%d", tweet.retweetCount));
 
         // set color of favorite button
         setButton(holder.ivFavorite, tweet.favorited, R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
@@ -120,8 +126,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvScreenName;    // user's @ name
         public ImageView ivMedia;        // embedded media
         public ImageView ivReply;        // reply button
-        public ImageView ivFavorite;        // like button
+        public ImageView ivFavorite;     // like button
         public ImageView ivRetweet;      // retweet button
+        public TextView tvFavoriteCount; // number of favorites
+        public TextView tvRetweetCount;  // number of retweets
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -136,6 +144,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
             ivFavorite = (ImageView) itemView.findViewById(R.id.ivFavorite);
             ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
+            tvFavoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+            tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
 
             itemView.setOnClickListener(this);
             ivReply.setOnClickListener(new View.OnClickListener() {
