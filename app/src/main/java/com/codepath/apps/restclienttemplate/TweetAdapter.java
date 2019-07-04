@@ -2,8 +2,8 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +16,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDetailsActivity;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
@@ -42,7 +40,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
-        ViewHolder viewHolder = new ViewHolder(tweetView);
+        final ViewHolder viewHolder = new ViewHolder(tweetView);
+
+        viewHolder.ivHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = viewHolder.getAdapterPosition();
+                Tweet tweet = mTweets.get(position);
+                tweet.switchFavorite(context, new JsonHttpResponseHandler());
+                setButton(viewHolder.ivHeart, tweet.favorited,
+                        R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
+            }
+        });
+
         return viewHolder;
     }
 
@@ -55,8 +65,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         // populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
-        holder.tvCreatedAt.setText(" • " + getRelativeTimeAgo(tweet.createdAt));
+        holder.tvCreatedAt.setText(" • " + tweet.getRelativeTimeAgo());
         holder.tvScreenName.setText("@" + tweet.user.screenName);
+
+        // set color of favorite button
+        setButton(holder.ivHeart, tweet.favorited, R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
 
         // populate the profile image using glide
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
@@ -71,7 +84,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         } else {
             holder.ivMedia.setVisibility(View.GONE);
         }
+    }
 
+    // sets the color of a button, depending on whether it is active
+    private void setButton(ImageView iv, boolean isActive, int strokeResId, int fillResId, int activeColor) {
+        iv.setImageResource(isActive ? fillResId : strokeResId);
+        iv.setColorFilter(ContextCompat.getColor(context, isActive ? activeColor : R.color.medium_gray));
     }
 
     @Override
@@ -90,6 +108,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvScreenName;    // user's @ name
         public ImageView ivMedia;        // embedded media
         public ImageView ivReply;        // reply button
+        public ImageView ivHeart;        // like button
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +121,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
+            ivHeart = (ImageView) itemView.findViewById(R.id.ivHeart);
 
             itemView.setOnClickListener(this);
             ivReply.setOnClickListener(new View.OnClickListener() {
@@ -134,24 +154,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 context.startActivity(intent);
             }
         }
-    }
-
-    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
-    public String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        String relativeDate = "";
-        try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return relativeDate;
     }
 
     // Clean all elements of the recycler
