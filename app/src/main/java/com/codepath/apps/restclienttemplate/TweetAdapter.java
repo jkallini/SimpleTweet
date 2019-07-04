@@ -42,14 +42,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         final ViewHolder viewHolder = new ViewHolder(tweetView);
 
-        viewHolder.ivHeart.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = viewHolder.getAdapterPosition();
                 Tweet tweet = mTweets.get(position);
                 tweet.switchFavorite(context, new JsonHttpResponseHandler());
-                setButton(viewHolder.ivHeart, tweet.favorited,
+                setButton(viewHolder.ivFavorite, tweet.favorited,
                         R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
+            }
+        });
+
+        viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = viewHolder.getAdapterPosition();
+                Tweet tweet = mTweets.get(position);
+                tweet.switchRetweet(context, new JsonHttpResponseHandler());
+                setButton(viewHolder.ivRetweet, tweet.retweeted,
+                        R.drawable.ic_vector_retweet_stroke, R.drawable.ic_vector_retweet, R.color.medium_green);
             }
         });
 
@@ -69,7 +80,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvScreenName.setText("@" + tweet.user.screenName);
 
         // set color of favorite button
-        setButton(holder.ivHeart, tweet.favorited, R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
+        setButton(holder.ivFavorite, tweet.favorited, R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
+        setButton(holder.ivRetweet, tweet.retweeted, R.drawable.ic_vector_retweet_stroke, R.drawable.ic_vector_retweet, R.color.medium_green);
 
         // populate the profile image using glide
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
@@ -108,7 +120,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvScreenName;    // user's @ name
         public ImageView ivMedia;        // embedded media
         public ImageView ivReply;        // reply button
-        public ImageView ivHeart;        // like button
+        public ImageView ivFavorite;        // like button
+        public ImageView ivRetweet;      // retweet button
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -121,7 +134,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
-            ivHeart = (ImageView) itemView.findViewById(R.id.ivHeart);
+            ivFavorite = (ImageView) itemView.findViewById(R.id.ivFavorite);
+            ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
 
             itemView.setOnClickListener(this);
             ivReply.setOnClickListener(new View.OnClickListener() {

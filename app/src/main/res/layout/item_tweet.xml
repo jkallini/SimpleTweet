@@ -99,7 +99,7 @@
         app:srcCompat="@drawable/vector_compose_dm_fab" />
 
     <ImageView
-        android:id="@+id/ivHeart"
+        android:id="@+id/ivFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivHeart"
+        app:layout_constraintEnd_toStartOf="@+id/ivFavorite"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ivReply"
         app:layout_constraintTop_toBottomOf="@+id/ivMedia"
@@ -130,7 +130,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivHeart"
+        app:layout_constraintStart_toEndOf="@+id/ivFavorite"
         app:layout_constraintTop_toBottomOf="@+id/ivMedia"
         app:srcCompat="@drawable/ic_vector_compose_dm" />
 

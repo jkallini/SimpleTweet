@@ -24,8 +24,13 @@ public class Tweet {
     public User user;
     public Entities entities;
 
+    // fields for favoriting a tweet
     public long favoriteCount;
     public boolean favorited;
+
+    // fields for retweeting
+    public long retweetCount;
+    public boolean retweeted;
 
     // generic constructor
     public Tweet() {
@@ -43,6 +48,8 @@ public class Tweet {
         tweet.entities = Entities.fromJSON(jsonObject.getJSONObject("entities"));
         tweet.favoriteCount = jsonObject.getLong("favorite_count");
         tweet.favorited = jsonObject.getBoolean("favorited");
+        tweet.retweetCount = jsonObject.getLong("retweet_count");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
 
         return tweet;
     }
@@ -69,5 +76,10 @@ public class Tweet {
     public void switchFavorite(Context context, JsonHttpResponseHandler handler) {
         TwitterApp.getRestClient(context).favoriteTweet(favorited = !favorited, uid, handler);
         favoriteCount = (favorited ? 1 : -1);
+    }
+
+    public void switchRetweet(Context context, JsonHttpResponseHandler handler) {
+        TwitterApp.getRestClient(context).retweetTweet(retweeted = !retweeted, uid, handler);
+        retweetCount = (retweeted ? 1 : -1);
     }
 }
