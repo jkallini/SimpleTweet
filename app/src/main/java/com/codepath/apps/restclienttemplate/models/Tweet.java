@@ -1,7 +1,6 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -12,6 +11,7 @@ import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 @Parcel
@@ -55,6 +55,7 @@ public class Tweet {
     }
 
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+    /*
     public String getRelativeTimeAgo() {
         String rawJsonDate = createdAt;
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -71,6 +72,57 @@ public class Tweet {
         }
 
         return relativeDate;
+    } */
+
+    public String getRelativeTimeAgo() {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        try {
+            Date systemDate = sf.parse(createdAt);
+
+            Date userDate = new Date();
+            double diff = Math.floor((userDate.getTime() - systemDate.getTime()) / 1000);
+            if (diff <= 1) {
+                return "just now";
+            }
+            if (diff < 20) {
+                return diff + "s";
+            }
+            if (diff < 40) {
+                return "30s";
+            }
+            if (diff < 60) {
+                return "45s";
+            }
+            if (diff <= 90) {
+                return "1m";
+            }
+            if (diff <= 3540) {
+                return Math.round(diff / 60) + "m";
+            }
+            if (diff <= 5400) {
+                return "1h";
+            }
+            if (diff <= 86400) {
+                return Math.round(diff / 3600) + "h";
+            }
+            if (diff <= 129600) {
+                return "1d";
+            }
+            if (diff < 604800) {
+                return Math.round(diff / 86400) + "d";
+            }
+            if (diff <= 777600) {
+                return "1w";
+            }
+            return Math.round(diff / 604800) + "w";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     public void switchFavorite(Context context, JsonHttpResponseHandler handler) {
@@ -83,5 +135,5 @@ public class Tweet {
         retweetCount += (retweeted ? 1 : -1);
     }
 
-    
+
 }
