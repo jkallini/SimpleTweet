@@ -91,9 +91,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         // populate the profile image using glide
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+
+        // populate any embedded media with glide
         if (tweet.entities.hasEntity) {
-            String mediaUrl= tweet.entities.mediaUrl;
-            //Glide.with(context).load(mediaUrl).into(holder.ivMedia);
             Glide.with(context)
                     .load(tweet.entities.mediaUrl)
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(40)))

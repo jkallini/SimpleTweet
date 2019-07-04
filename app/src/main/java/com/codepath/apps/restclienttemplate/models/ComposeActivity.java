@@ -29,7 +29,6 @@ public class ComposeActivity extends AppCompatActivity {
     TextView tvCharsLeft;                     // number of characters left
     TwitterClient client;                     // twitter client
     final int CHAR_TOTAL = 280;               // total chars
-    Tweet toReply;                            // tweet that may be replied to
 
 
     // watcher keeps track of characters remaining, updates text view

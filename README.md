@@ -45,7 +45,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] The **number of retweets and favorites** appears on each tweet.
+  * [x] The count increments when "retweet" or "favorite" is clicked.
 
 ## Video Walkthrough
 
