@@ -56,6 +56,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         // populate the profile image using glide
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        if (tweet.entities.hasEntity) {
+            String mediaUrl= tweet.entities.mediaUrl;
+            Glide.with(context).load(mediaUrl).into(holder.ivMedia);
+            holder.ivMedia.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivMedia.setVisibility(View.GONE);
+        }
+        /*
+        Glide.with(context)
+                .load(tweet.entities.mediaUrl)
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(40)))
+                .into(holder.ivMedia); */
+
     }
 
     @Override
@@ -72,6 +85,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvBody;
         public TextView tvCreatedAt;
         public TextView tvScreenName;
+        public ImageView ivMedia;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -82,6 +96,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
+            ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
 
             itemView.setOnClickListener(this);
         }

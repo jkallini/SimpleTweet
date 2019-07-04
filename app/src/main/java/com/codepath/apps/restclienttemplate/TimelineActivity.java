@@ -111,7 +111,7 @@ public class TimelineActivity extends AppCompatActivity {
     public void fetchTimelineAsync(int page) {
         tweetAdapter.clear();
         populateTimeline();
-        swipeContainer.setRefreshing(false);
+
     }
 
 
@@ -134,11 +134,13 @@ public class TimelineActivity extends AppCompatActivity {
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                        //tweetAdapter.notifyItemInserted(tweets.size() - 1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                tweetAdapter.addAll(tweets);
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
