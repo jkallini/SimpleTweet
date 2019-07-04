@@ -61,11 +61,17 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle presses on the compose tweet menu item
         if (item.getItemId() == R.id.miCompose) {
-            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-            TimelineActivity.this.startActivityForResult(intent, ComposeActivity.REQUEST_CODE);
+            composeTweet("");
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // call send an intent with any additional reply text to ComposeActivity
+    public void composeTweet(String text) {
+        Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+        intent.putExtra("reply", text);
+        TimelineActivity.this.startActivityForResult(intent, ComposeActivity.REQUEST_CODE);
     }
 
     @Override
@@ -80,9 +86,6 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 fetchTimelineAsync(0);
             }
         });
@@ -105,6 +108,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
+
         populateTimeline();
     }
 

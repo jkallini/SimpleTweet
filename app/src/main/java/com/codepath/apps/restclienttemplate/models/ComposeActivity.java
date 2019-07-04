@@ -28,7 +28,9 @@ public class ComposeActivity extends AppCompatActivity {
     EditText etTweet;                         // textbox that hold's user input
     TextView tvCharsLeft;                     // number of characters left
     TwitterClient client;                     // twitter client
-    final int CHAR_TOTAL = 280;
+    final int CHAR_TOTAL = 280;               // total chars
+    Tweet toReply;                            // tweet that may be replied to
+
 
     // watcher keeps track of characters remaining, updates text view
     private final TextWatcher watcher = new TextWatcher() {
@@ -60,8 +62,11 @@ public class ComposeActivity extends AppCompatActivity {
         tvCharsLeft.setText(Integer.toString(CHAR_TOTAL));
         etTweet.addTextChangedListener(watcher);
 
-        ibTweetButton.setOnClickListener(new View.OnClickListener() {
+        // check if the tweet to be composed is a reply
+        String reply = getIntent().getStringExtra("reply");
+        etTweet.setText(reply);
 
+        ibTweetButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

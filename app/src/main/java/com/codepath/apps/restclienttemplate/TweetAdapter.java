@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDetailsActivity;
 
@@ -29,6 +32,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     // constructor takes a tweet array
     public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
+
     }
 
     // for each row, inflate the layout and cache references into ViewHolder
@@ -58,16 +62,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
         if (tweet.entities.hasEntity) {
             String mediaUrl= tweet.entities.mediaUrl;
-            Glide.with(context).load(mediaUrl).into(holder.ivMedia);
+            //Glide.with(context).load(mediaUrl).into(holder.ivMedia);
+            Glide.with(context)
+                    .load(tweet.entities.mediaUrl)
+                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(40)))
+                    .into(holder.ivMedia);
             holder.ivMedia.setVisibility(View.VISIBLE);
         } else {
             holder.ivMedia.setVisibility(View.GONE);
         }
-        /*
-        Glide.with(context)
-                .load(tweet.entities.mediaUrl)
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(40)))
-                .into(holder.ivMedia); */
 
     }
 
@@ -80,12 +83,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // references of views from the itemView passed in constructor
-        public ImageView ivProfileImage;
-        public TextView tvUsername;
-        public TextView tvBody;
-        public TextView tvCreatedAt;
-        public TextView tvScreenName;
-        public ImageView ivMedia;
+        public ImageView ivProfileImage; // profile image
+        public TextView tvUsername;      // user's name, appears in bold
+        public TextView tvBody;          // tweet text
+        public TextView tvCreatedAt;     // timestamp
+        public TextView tvScreenName;    // user's @ name
+        public ImageView ivMedia;        // embedded media
+        public ImageView ivReply;        // reply button
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -97,8 +101,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
+            ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
 
             itemView.setOnClickListener(this);
+            ivReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    // compose a tweet when reply button is clicked
+                    if (context instanceof TimelineActivity) {
+                        String reply = tvScreenName.getText().toString();
+                        ((TimelineActivity) context).composeTweet(reply);
+                    }
+                    else {
+                        Log.d("TweetAdapter", "context is not TimelineActivity");
+                    }
+                }
+            });
         }
 
         public void onClick(View v) {
@@ -108,13 +127,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
             // check that the position exists
             if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position
+                // get the tweet and send it's intent to the new activity
                 Tweet tweet = mTweets.get(position);
-                // create intent for TweetDetailsActivity
                 Intent intent = new Intent(context, TweetDetailsActivity.class);
-                // serialize the movie using parceler, usd its short name as a key
                 intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                // show the activity
                 context.startActivity(intent);
             }
         }
