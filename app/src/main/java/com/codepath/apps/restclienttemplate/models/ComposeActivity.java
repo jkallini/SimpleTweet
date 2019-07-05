@@ -32,7 +32,7 @@ public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;                     // twitter client
     final int CHAR_TOTAL = 280;               // total chars
 
-    // Instance of the progress action-view
+    // instance of the progress action-view
     ProgressBar progressBar;
 
     @Override
