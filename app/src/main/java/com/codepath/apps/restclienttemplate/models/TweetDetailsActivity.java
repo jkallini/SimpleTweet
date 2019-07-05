@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,9 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TweetDetailsActivity extends AppCompatActivity {
 
     private Tweet tweet;
@@ -28,30 +32,32 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvTime) TextView tvTime;
      */
 
-    TextView tvUsername;
-    TextView tvScreenName;
-    TextView tvBody;
-    TextView tvTime;
-    ImageView ivProfileImage;
-    ImageView ivMedia;
+    @BindView(R.id.tvUsername) TextView tvUsername;
+    @BindView(R.id.tvScreenName) TextView tvScreenName;
+    @BindView(R.id.tvBody) TextView tvBody;
+    @BindView(R.id.tvTime) TextView tvTime;
+    @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+    @BindView(R.id.ivMedia) ImageView ivMedia;
 
-    ImageView ivFavorite;
-    TextView tvFavoriteCount;
-    ImageView ivRetweet;
-    TextView tvRetweetCount;
+    @BindView(R.id.ivFavorite) ImageView ivFavorite;
+    @BindView(R.id.tvFavoriteCount) TextView tvFavoriteCount;
+    @BindView(R.id.ivRetweet) ImageView ivRetweet;
+    @BindView(R.id.tvRetweetCount) TextView tvRetweetCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_USE_LOGO);
+        actionBar.setIcon(R.drawable.twitter_logo);
+
         context = getParent();
 
-        // ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
-        tvUsername = (TextView) findViewById(R.id.tvUsername);
-        tvScreenName = (TextView) findViewById(R.id.tvScreenName);
-        tvBody = (TextView) findViewById(R.id.tvBody);
-        tvTime = (TextView) findViewById(R.id.tvTime);
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         ivMedia = (ImageView) findViewById(R.id.ivMedia);
 
@@ -60,12 +66,6 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvScreenName.setText("@" + tweet.user.screenName);
         tvBody.setText(tweet.body);
         tvTime.setText(tweet.getDate());
-
-        // fields for favoriting and retweeting
-        ivFavorite = findViewById(R.id.ivFavorite);
-        tvFavoriteCount = findViewById(R.id.tvFavoriteCount);
-        ivRetweet = findViewById(R.id.ivRetweet);
-        tvRetweetCount = findViewById(R.id.tvRetweetCount);
 
         // set color of favorite button
         setButton(ivFavorite, tweet.favorited, R.drawable.ic_vector_heart_stroke, R.drawable.ic_vector_heart, R.color.medium_red);
