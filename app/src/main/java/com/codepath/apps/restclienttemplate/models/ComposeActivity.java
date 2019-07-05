@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.R;
@@ -30,6 +32,26 @@ public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;                     // twitter client
     final int CHAR_TOTAL = 280;               // total chars
 
+    // Instance of the progress action-view
+    ProgressBar progressBar;
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        progressBar = findViewById(R.id.miActionProgress);
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showProgressBar() {
+        // Show progress item
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        progressBar.setVisibility(View.GONE);
+    }
 
     // watcher keeps track of characters remaining, updates text view
     private final TextWatcher watcher = new TextWatcher() {
@@ -70,6 +92,8 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                showProgressBar();
+
                 final String tweetText = etTweet.getText().toString();
 
                 // send the user's tweet
@@ -77,6 +101,8 @@ public class ComposeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         try {
+                            hideProgressBar();
+
                             // get tweet from JSON response
                             Tweet tweet = Tweet.fromJSON(response);
 
