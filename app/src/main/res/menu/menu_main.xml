@@ -3,17 +3,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/miActionProgress"
+        android:title="Loading..."
+        android:visible="false"
+        app:showAsAction="always"
+        app:actionLayout="@layout/action_view_progress" />
+
+    <item
         android:id="@+id/miCompose"
         android:icon="@drawable/vector_compose_fab"
         android:title="Compose"
         app:showAsAction="ifRoom"></item>
-
-    <item
-        android:id="@+id/miActionProgress"
-        android:title="Loading..."
-        android:visible="false"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        app:actionLayout="@layout/action_view_progress" />
 
 </menu>
