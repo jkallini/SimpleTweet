@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.codepath.apps.restclienttemplate.models.ComposeActivity;
+import com.codepath.apps.restclienttemplate.models.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -35,6 +36,9 @@ public class TimelineActivity extends AppCompatActivity {
 
     // swipe container for swipe to refresh functionality
     private SwipeRefreshLayout swipeContainer;
+
+    // Store a member variable for the listener
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     // Instance of the progress action-view
     MenuItem miActionProgressItem;
@@ -135,18 +139,46 @@ public class TimelineActivity extends AppCompatActivity {
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
 
-        populateTimeline();
+        populateTimeline(0L);
+
+        // for enabling endless scrolling
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
+    }
+
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    public void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+        if (tweets.isEmpty()) return;
+        long maxId = tweets.get(tweets.size() - 1).uid - 1;
+        populateTimeline(maxId);
     }
 
     public void fetchTimelineAsync(int page) {
         tweetAdapter.clear();
-        populateTimeline();
+        populateTimeline(0L);
         swipeContainer.setRefreshing(false);
     }
 
     // fill timeline with tweets
-    private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    private void populateTimeline(final long maxId) {
+        client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
@@ -154,7 +186,9 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Log.d("TwitterClient", response.toString());
+
+                // clear the adapter when first opening app
+                if (maxId == 0L) tweetAdapter.clear();
 
                 // deserialize each JSON object in the JSON array
                 for (int i = 0; i < response.length(); i++) {
@@ -164,13 +198,11 @@ public class TimelineActivity extends AppCompatActivity {
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
-                        //tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                tweetAdapter.addAll(tweets);
-                swipeContainer.setRefreshing(false);
             }
 
             @Override
