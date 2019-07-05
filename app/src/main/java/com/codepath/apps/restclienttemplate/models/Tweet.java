@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +32,9 @@ public class Tweet {
     // fields for retweeting
     public long retweetCount;
     public boolean retweeted;
+
+    // twitter date format
+    public final String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
     // generic constructor
     public Tweet() {
@@ -74,8 +78,29 @@ public class Tweet {
         return relativeDate;
     } */
 
+    public String getDate() {
+        String strDate = "";
+
+        try {
+            DateFormat srcDf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+
+            // parse the date string into Date object
+            Date date = srcDf.parse(createdAt);
+            DateFormat destDf = new SimpleDateFormat("h:mm a  •  mm/dd/yy");
+
+            // format the date into another format
+            strDate = destDf.format(date);
+
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return strDate;
+    }
+
+    // parse Json string into a relative timestamp
     public String getRelativeTimeAgo() {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
 

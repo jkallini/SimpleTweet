@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".models.TweetDetailsActivity">
+
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,7 +71,7 @@
         android:layout_marginBottom="8dp"
         android:text="Screen Name"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvBody"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImage"
@@ -85,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvScreenName"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileImage"
         app:layout_constraintVertical_bias="0.01999998" />
 
     <TextView
@@ -104,3 +112,5 @@
         app:layout_constraintTop_toBottomOf="@+id/ivMedia"
         app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
