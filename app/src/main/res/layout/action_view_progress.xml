@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?android:attr/progressBarStyleLarge"
+    android:id="@+id/pbProgressAction"
+    style="@style/Widget.AppCompat.ProgressBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/pbProgressAction" />
+    android:indeterminateDrawable="@drawable/progress_timeline" />

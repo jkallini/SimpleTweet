@@ -13,4 +13,18 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"/>
 
+        <ProgressBar
+            android:id="@+id/miActionProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#00000000"
+            android:indeterminateDrawable="@drawable/progress"
+            android:orderInCategory="100"
+            android:title="Loading..."
+            android:visibility="gone" />
+
 </android.support.v4.widget.SwipeRefreshLayout>
