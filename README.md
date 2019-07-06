@@ -51,6 +51,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+<img src='https://github.com/jkallini/MySimpleTweets/blob/master/walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='https://github.com/jkallini/MySimpleTweets/blob/master/walkthrough_timeline.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='https://github.com/jkallini/MySimpleTweets/blob/master/walkthrough_progressbar.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
