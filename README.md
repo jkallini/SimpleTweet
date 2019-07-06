@@ -33,14 +33,10 @@ The following **stretch** features are implemented:
 The following **bonus** features are implemented:
 
 * [x] User can view more tweets as they scroll with infinite pagination
-* [ ] Compose tweet functionality is build using modal overlay
 * [x] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
 * [x] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.org/android/Using-Parceler).
 * [x] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.org/android/Drawables#vector-drawables) where appropriate.
-* [ ] User can view following / followers list through any profile they view.
-* [ ] Use the popular ButterKnife annotation library to reduce view boilerplate.
-* [ ] On the Twitter timeline, leverage the [CoordinatorLayout](http://guides.codepath.org/android/Handling-Scrolls-with-CoordinatorLayout#responding-to-scroll-events) to apply scrolling behavior that [hides / shows the toolbar](http://guides.codepath.org/android/Using-the-App-ToolBar#reacting-to-scroll).
-* [ ] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
+* [x] Use the popular ButterKnife annotation library to reduce view boilerplate.
 
 
 The following **additional** features are implemented:
@@ -49,6 +45,7 @@ The following **additional** features are implemented:
   * [x] The count increments when "retweet" or "favorite" is clicked.
 * [x] The date of a tweet (in Twitter's format) appears on the detailed view.
 * [x] The detailed view is scrollable (allowing larger images to be viewed).
+* [x] The home screen has a BottomNavigationView with home, search, and notifications buttons.
 
 ## Video Walkthrough
 
