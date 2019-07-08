@@ -59,7 +59,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+The most challenging part of completing this app was getting the UI to look similar to Twitter's, particularly with customizing the Toolbar.
 
 ## Open-source libraries used
 
